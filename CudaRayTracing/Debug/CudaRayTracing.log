@@ -1,0 +1,7 @@
+﻿  Camera.cpp
+  CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\Debug\CudaRayTracing.exe
+  CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\Debug\CudaRayTracing.pdb (Full PDB)
+  copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\cudart*.dll" "D:\Yoon\Cuda\CudaRayTracing\Debug\"
+  C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\cudart32_80.dll
+  C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\cudart64_80.dll
+          2개 파일이 복사되었습니다.

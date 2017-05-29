@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="kernel.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{1b68b8a0-c2ea-45a4-b65d-7536a61ed01d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{7020a74a-5c64-4b66-b00c-c3af18f3848b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Objects">
+      <UniqueIdentifier>{203bab48-174a-4249-aea4-c5b544d6d15f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Raytracing">
+      <UniqueIdentifier>{ec51a4c5-ed54-477b-af3e-ac7182f1ebb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Raytracing">
+      <UniqueIdentifier>{d19f8e1e-c9cf-4b1f-a691-8d3b44037c27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Objects">
+      <UniqueIdentifier>{83b1524e-af1b-4a7e-a9da-f32921bb2e46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Light">
+      <UniqueIdentifier>{606bbb4e-8950-47a3-961e-94c6d3fe515f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Light">
+      <UniqueIdentifier>{c3faa8e2-5b72-458d-ad28-8bf18e7e355e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Object.h">
+      <Filter>Header\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="gmath.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Header\Raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Header\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>Header\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Header\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer.h">
+      <Filter>Header\Raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="gmath.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Source\Raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>Source\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Source\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer.cpp">
+      <Filter>Source\Raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
