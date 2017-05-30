@@ -1,4 +1,5 @@
 #include "RayTracer.h"
+#include "math_functions.h"
 
 RayTracer::RayTracer()
 	: pixels(), width(0), height(0), camera(), light_id_counter(0), object_id_counter(0)
@@ -10,12 +11,12 @@ RayTracer::~RayTracer()
 		delete[] pixels[i];
 	delete[] pixels;
 
-	for (unordered_map<int, Object*>::iterator iter = objects.begin();
+	for (std::unordered_map<int, Object*>::iterator iter = objects.begin();
 		iter != objects.end();
 		++iter)
 		delete iter->second;
 
-	for (unordered_map<int, PointLight*>::iterator iter = lights.begin();
+	for (std::unordered_map<int, PointLight*>::iterator iter = lights.begin();
 		iter != lights.end();
 		++iter)
 		delete iter->second;
@@ -25,8 +26,8 @@ void RayTracer::Trace(__in const Ray& ray, __in const int recur_num,
 					__in const int pass_obj_id, __out Color& color)
 {
 	int intersected_obj_id = -1;
-	GPoint3 intersected_point;
-	GVector3 normal;
+	KPoint3 intersected_point;
+	KVector3 normal;
 
 	// find the nearest intersection point
 	Closest_intersection(intersected_point, normal, intersected_obj_id,
@@ -44,19 +45,19 @@ void RayTracer::Trace(__in const Ray& ray, __in const int recur_num,
 	}
 }
 
-void RayTracer::Shade(__in const GPoint3& point, __in const GVector3& normal,
+void RayTracer::Shade(__in const KPoint3& point, __in const KVector3& normal,
 					__in const int intersected_obj_id, __in const Ray& ray,
 					__in const int recur_num, __out Color& color)
 {
 	Color total;
 
-	for (unordered_map<int, PointLight*>::iterator iter = lights.begin();
+	for (std::unordered_map<int, PointLight*>::iterator iter = lights.begin();
 		iter != lights.end();
 		++iter)
 	{
 		int shade_inter_obj_id = -1;
-		GPoint3 shade_inter_point;
-		GVector3 shade_normal;
+		KPoint3 shade_inter_point;
+		KVector3 shade_normal;
 		Ray shade_ray(point, iter->second->GetPosition() - point);
 		Closest_intersection(shade_inter_point, shade_normal, shade_inter_obj_id,
 							shade_ray, intersected_obj_id);
@@ -72,8 +73,8 @@ void RayTracer::Shade(__in const GPoint3& point, __in const GVector3& normal,
 		}
 		else if (recur_num > 0)
 		{
-			GVector3 L1 = (iter->second->GetPosition() - shade_inter_point);
-			GVector3 L2 = (iter->second->GetPosition() - point);
+			KVector3 L1 = (iter->second->GetPosition() - shade_inter_point);
+			KVector3 L2 = (iter->second->GetPosition() - point);
 			if (L1 * L2 < 0)
 			{
 				Color temp;
@@ -110,7 +111,7 @@ void RayTracer::Shade(__in const GPoint3& point, __in const GVector3& normal,
 
 		float cosi = normal * (-ray.GetDirection());
 		float cost = n * (1 - (1 / (n * n))) * sqrt(1 - cosi * cosi);
-		GVector3 T = (1 / n) * ray.GetDirection() - (cost - (1 / n)*cosi) * normal;
+		KVector3 T = (1 / n) * ray.GetDirection() - (cost - (1 / n)*cosi) * normal;
 
 		Ray temp_ray(point, T);
 		Color temp_color;
@@ -123,16 +124,16 @@ void RayTracer::Shade(__in const GPoint3& point, __in const GVector3& normal,
 	color = total;
 }
 
-void RayTracer::Closest_intersection(__out GPoint3& out_point, __out GVector3& out_normal,
+void RayTracer::Closest_intersection(__out KPoint3& out_point, __out KVector3& out_normal,
 									__out int& intersected_obj_id, __in const Ray& ray,
 									__in const int pass_obj_id)
 {
 	intersected_obj_id = -1;
-	GPoint3 temp_point;
+	KPoint3 temp_point;
 	bool is_intersected = false;
 
 	// loop per each object
-	for (unordered_map<int, Object*>::iterator iter = objects.begin();
+	for (std::unordered_map<int, Object*>::iterator iter = objects.begin();
 		iter != objects.end();
 		++iter)
 	{
@@ -169,15 +170,15 @@ void RayTracer::Closest_intersection(__out GPoint3& out_point, __out GVector3& o
 
 void RayTracer::RayTrace(__in const char* const output_filename)
 {
-	GVector3 o = this->camera.GetScreenO(width, height);
+	KVector3 o = this->camera.GetScreenO(width, height);
 
 	for (int i = 0; i < width; i++)
 	{
 		for (int j = 0; j < height; j++)
 		{
 			// caculate ray
-			GPoint3 pos = this->camera.GetEyePosition();
-			GVector3 dir = o +
+			KPoint3 pos = this->camera.GetEyePosition();
+			KVector3 dir = o +
 						i * this->camera.GetScreenU() +
 						j * this->camera.GetScreenV();
 			dir = dir.Normalize();
@@ -191,7 +192,7 @@ void RayTracer::RayTrace(__in const char* const output_filename)
 		}
 
 		printf("\r");
-		cout << (i / (double)width) * 100 << "%";
+		std::cout << (i / (double)width) * 100 << "%";
 	}
 
 	unsigned char* tempPixels;
@@ -260,13 +261,13 @@ void RayTracer::SetCamera(__in const Camera& camera)
 
 int RayTracer::AddObject(__in const Object& obj)
 {
-	this->objects.insert(pair<int, Object*>(this->object_id_counter, obj.GetHeapCopy()));
+	this->objects.insert(std::pair<int, Object*>(this->object_id_counter, obj.GetHeapCopy()));
 	return this->object_id_counter++;
 }
 
 int RayTracer::AddLight(__in const PointLight& light)
 {
-	this->lights.insert(pair<int, PointLight*>(this->light_id_counter, light.GetHeapCopy()));
+	this->lights.insert(std::pair<int, PointLight*>(this->light_id_counter, light.GetHeapCopy()));
 	return this->light_id_counter++;
 }
 
@@ -300,7 +301,7 @@ int RayTracer::GetLightCount() const
 
 void RayTracer::GetAllObjectIDs(__out int ids[]) const
 {
-	unordered_map<int, Object*>::const_iterator iter;
+	std::unordered_map<int, Object*>::const_iterator iter;
 	int i;
 
 	for (iter = objects.cbegin(), i = 0;
@@ -311,7 +312,7 @@ void RayTracer::GetAllObjectIDs(__out int ids[]) const
 
 void RayTracer::GetAllLightIDs(__out int ids[]) const
 {
-	unordered_map<int, PointLight*>::const_iterator iter;
+	std::unordered_map<int, PointLight*>::const_iterator iter;
 	int i;
 
 	for (iter = lights.cbegin(), i = 0;

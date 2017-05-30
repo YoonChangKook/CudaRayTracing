@@ -1,7 +1,8 @@
 #include "Sphere.h"
+#include "math_functions.h"
 
 // Constructors
-Sphere::Sphere(__in const GPoint3& pos, float r, __in const Color& diffuse,
+Sphere::Sphere(__in const KPoint3& pos, float r, __in const Color& diffuse,
 	__in const Color& specular, __in const float shininess,
 	__in const float reflectance, __in const float transmittance, __in const float density)
 	: Object(diffuse, specular, shininess, reflectance, transmittance, density),
@@ -22,9 +23,9 @@ Object* Sphere::GetHeapCopy() const
 	return new Sphere(*this);
 }
 
-void Sphere::GetIntersectionPoint(__in const Ray& ray, __out GPoint3& intersect_point, __out bool& is_intersect) const
+void Sphere::GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, __out bool& is_intersect) const
 {
-	GVector3 c = position - ray.GetPoint();
+	KVector3 c = position - ray.GetPoint();
 	double tc = c * ray.GetDirection();
 
 	// Check whether the sphere is behind the camera
@@ -56,7 +57,7 @@ void Sphere::GetIntersectionPoint(__in const Ray& ray, __out GPoint3& intersect_
 	intersect_point = ray.GetPoint() + t * ray.GetDirection();
 }
 
-void Sphere::GetNormal(__in const GPoint3& point, __out GVector3& normal) const
+void Sphere::GetNormal(__in const KPoint3& point, __out KVector3& normal) const
 {
 	normal = (point - this->position).Normalize();
 }

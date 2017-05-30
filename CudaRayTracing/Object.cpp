@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "math_functions.h"
 
 // Static Member Initialize
 const float Object::ambient_ratio = 20 / 255.0f;
@@ -33,7 +34,7 @@ float Object::GetDensity() const
 	return this->density;
 }
 
-void Object::Local_Illumination(__in const GPoint3& point, __in const GVector3& normal,
+void Object::Local_Illumination(__in const KPoint3& point, __in const KVector3& normal,
 								__in const Ray& ray, __in const PointLight& light,
 								__out Color& color) const
 {
@@ -41,11 +42,11 @@ void Object::Local_Illumination(__in const GPoint3& point, __in const GVector3& 
 	light.GetColor(l_color);
 
 	// Calculate term
-	GVector3 L = light.GetPosition() - point;
+	KVector3 L = light.GetPosition() - point;
 	L.Normalize();
-	GVector3 N = normal;
+	KVector3 N = normal;
 	N.Normalize();
-	GVector3 H = (L + (-ray.GetDirection()).Normalize());
+	KVector3 H = (L + (-ray.GetDirection()).Normalize());
 	H.Normalize();
 
 	double diffuse_term = N * L;

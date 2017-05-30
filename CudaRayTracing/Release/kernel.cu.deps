@@ -306,6 +306,7 @@ c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\vector_types.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\cuda_runtime.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\device_atomic_functions.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\device_launch_parameters.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_stdio_config.h
@@ -389,6 +390,10 @@ C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xfacet
 C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\system_error
 C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cerrno
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\share.h
+d:\yoon\cuda\cudaraytracing\cudaraytracing\KMath.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\cuda_runtime.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\device_launch_parameters.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h
 d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h
 C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\string
 C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\unordered_map
@@ -398,21 +403,8 @@ C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xmemory
 C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vector
 C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\tuple
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Ray.h
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cassert
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\assert.h
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdarg
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\stdarg.h
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\iomanip
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocmon
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xloctime
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ctime
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\cuda_runtime.h
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Camera.h
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Color.h
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cassert
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\assert.h
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Object.h
 d:\yoon\cuda\cudaraytracing\cudaraytracing\PointLight.h
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Sphere.h

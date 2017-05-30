@@ -1,4 +1,5 @@
 #include "Color.h"
+#include "math_functions.h"
 
 Color::Color()
 	: color{ 0, 0, 0 }
@@ -18,13 +19,11 @@ Color::~Color()
 
 unsigned char& Color::operator [](const int& idx)
 {
-	assert(idx >= 0 && idx < 3);
 	return this->color[idx];
 }
 
 const unsigned char& Color::operator [](const int& idx) const
 {
-	assert(idx >= 0 && idx < 3);
 	return this->color[idx];
 }
 

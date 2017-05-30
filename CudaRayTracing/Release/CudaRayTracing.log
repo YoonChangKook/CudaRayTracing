@@ -17,37 +17,26 @@ c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\device_functions
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\device_double_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\sm_20_intrinsics.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\sm_20_intrinsics.h(943): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(78): warning : attribute does not apply to any entity
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(351): warning : a host member "GVector3::Precision" cannot be directly read in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(366): warning : a host member "GVector3::Precision" cannot be directly read in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(421): warning : a host member "GVector3::Precision" cannot be directly read in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(434): warning : a host member "GVector3::Precision" cannot be directly read in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(450): warning : a host member "GVector3::Precision" cannot be directly written in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(461): warning : a host member "GVector3::Precision" cannot be directly read in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(507): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(507): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(507): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(507): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(507): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(507): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(507): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1225): warning : attribute does not apply to any entity
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1375): warning : a host member "GPoint3::Precision" cannot be directly read in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1390): warning : a host member "GPoint3::Precision" cannot be directly read in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1448): warning : a host member "GPoint3::Precision" cannot be directly written in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1459): warning : a host member "GPoint3::Precision" cannot be directly read in a device function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1473): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1473): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1473): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1473): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1473): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1473): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1473): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1542): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1568): warning : calling a __host__ function from a __host__ __device__ function is not allowed
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(4088): warning : missing return statement at end of non-void function "GQuater::Set(double *, __nv_bool)"
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(4397): warning : variable "r" was set but never used
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(4397): warning : variable "c" was set but never used
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(2637): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(3492): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(4431): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(5345): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(6252): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7142): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7956): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(2637): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(3492): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(4431): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(5345): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(6252): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7142): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7956): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
@@ -64,11 +53,26 @@ c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\device_functions
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\device_double_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\sm_20_intrinsics.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\sm_20_intrinsics.h(943): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(78): warning : attribute does not apply to any entity
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(1225): warning : attribute does not apply to any entity
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(4088): warning : missing return statement at end of non-void function "GQuater::Set(double *, bool)"
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(4397): warning : variable "r" was set but never used
-d:\yoon\cuda\cudaraytracing\cudaraytracing\gmath.h(4397): warning : variable "c" was set but never used
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(2637): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(3492): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(4431): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(5345): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(6252): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7142): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7956): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(2637): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(3492): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(4431): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(5345): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(6252): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7142): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7956): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
@@ -136,11 +140,7 @@ c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(7956): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 CUDACOMPILE : nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
   kernel.cu
-  코드를 생성하고 있습니다.
-  0 of 649 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
-  코드를 생성했습니다.
+  LINK : /LTCG를 지정했지만 코드를 생성할 필요가 없습니다. 명령줄에서 /LTCG를 제거하면 링커 성능이 향상됩니다.
   CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\Release\CudaRayTracing.exe
   CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\Release\CudaRayTracing.pdb (Full PDB)
   copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\cudart*.dll" "D:\Yoon\Cuda\CudaRayTracing\Release\"

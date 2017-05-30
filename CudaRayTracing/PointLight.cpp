@@ -1,9 +1,10 @@
 #include "PointLight.h"
+#include "math_functions.h"
 
 // Static Member Initialize
 const float PointLight::distance_value[3] = { 0.0f, 1.0f, 0.5f };
 
-PointLight::PointLight(__in const GPoint3& pos, __in const Color& color)
+PointLight::PointLight(__in const KPoint3& pos, __in const Color& color)
 	: position(pos), color(color)
 {}
 
@@ -19,7 +20,7 @@ PointLight* PointLight::GetHeapCopy() const
 	return new PointLight(*this);
 }
 
-const GPoint3& PointLight::GetPosition() const
+const KPoint3& PointLight::GetPosition() const
 {
 	return this->position;
 }
