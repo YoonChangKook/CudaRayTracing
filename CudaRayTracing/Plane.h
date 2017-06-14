@@ -3,32 +3,35 @@
 
 #include "Object.h"
 
+#define PLANE_TYPE 2
+
 class Plane : public Object
 {
 public:
 	// Constructors
-	Plane(__in const KPoint3 points[3], __in const Color& diffuse, __in const Color& specular, 
+	__host__ __device__ Plane(__in const KPoint3 points[3], __in const Color& diffuse, __in const Color& specular,
 		__in const float shininess,	__in const float reflectance, __in const float transmittance, 
 		__in const float density);
-	Plane(__in const KVector3& normal, __in const KPoint3& point, __in const Color& diffuse,
+	__host__ __device__ Plane(__in const KVector3& normal, __in const KPoint3& point, __in const Color& diffuse,
 		__in const Color& specular, __in const float shininess, __in const float reflectance, 
 		__in const float transmittance, __in const float density);
-	Plane(__in const Plane& cpy);
+	__host__ __device__ Plane(__in const Plane& cpy);
 
 	// Destructors
-	virtual ~Plane();
+	__host__ __device__ virtual ~Plane();
 
 private:
 	// Members
 	KVector3 normal;
-	double d;
+	float d;
 
 public:
 	// Methods
-	virtual Object* GetHeapCopy() const;
-	virtual void GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, 
-									__out bool& is_intersect) const;
-	virtual void GetNormal(__in const KPoint3& point, __out KVector3& normal) const;
+	__host__ __device__ virtual Object* GetHeapCopy() const;
+	__host__ __device__ virtual void GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, 
+														__out bool& is_intersect) const;
+	__host__ __device__ virtual void GetNormal(__in const KPoint3& point, __out KVector3& normal) const;
+	__host__ __device__ virtual int GetType() const;
 };
 
 Plane::Plane(__in const KPoint3 points[3], __in const Color& diffuse,
@@ -74,10 +77,10 @@ void Plane::GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_p
 	KVector3 eye = cast_vec3(ray.GetPoint());
 	KVector3 dir = ray.GetDirection();
 	dir = dir.Normalize();
-	double t = -(this->normal * eye + this->d) / (this->normal * dir);
+	float t = -(this->normal * eye + this->d) / (this->normal * dir);
 
 	// check whether plane is behind camera
-	if (t <= 0)
+	if (t <= 0.0f)
 	{
 		is_intersect = false;
 		return;
@@ -92,6 +95,11 @@ void Plane::GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_p
 void Plane::GetNormal(__in const KPoint3& point, __out KVector3& normal) const
 {
 	normal = this->normal;
+}
+
+int Plane::GetType() const
+{
+	return PLANE_TYPE;
 }
 
 #endif

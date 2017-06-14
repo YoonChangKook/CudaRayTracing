@@ -5,12 +5,12 @@ class Color
 {
 public:
 	// Constructors
-	Color();
-	Color(unsigned char r, unsigned char g, unsigned char b);
-	Color(const unsigned char color[3]);
-	Color(const Color& cpy);
+	__host__ __device__ Color();
+	__host__ __device__ Color(unsigned char r, unsigned char g, unsigned char b);
+	__host__ __device__ Color(const unsigned char color[3]);
+	__host__ __device__ Color(const Color& cpy);
 	// Destructors
-	virtual ~Color();
+	__host__ __device__ ~Color();
 
 private:
 	// Members
@@ -18,15 +18,15 @@ private:
 
 public:
 	// Methods
-	unsigned char& operator [](const int& idx);
-	const unsigned char& operator [](const int& idx) const;
-	Color operator +(const Color& other) const;
-	Color operator -(const Color& other) const;
-	Color operator *(const double& v) const;
-	Color& operator =(const Color& other);
-	Color& operator +=(const Color& other);
-	Color& operator -=(const Color& other);
-	Color& operator *=(const double& v);
+	__host__ __device__ unsigned char& operator [](const int& idx);
+	__host__ __device__ const unsigned char& operator [](const int& idx) const;
+	__host__ __device__ Color operator +(const Color& other) const;
+	__host__ __device__ Color operator -(const Color& other) const;
+	__host__ __device__ Color operator *(const double& v) const;
+	__host__ __device__ Color& operator =(const Color& other);
+	__host__ __device__ Color& operator +=(const Color& other);
+	__host__ __device__ Color& operator -=(const Color& other);
+	__host__ __device__ Color& operator *=(const double& v);
 };
 
 Color::Color()

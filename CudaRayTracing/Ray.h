@@ -7,10 +7,10 @@ class Ray
 {
 public:
 	// Constructors
-	Ray(__in const KPoint3& point, __in const KVector3& direction);
-	Ray(__in const Ray& cpy);
+	__host__ __device__ Ray(__in const KPoint3& point, __in const KVector3& direction);
+	__host__ __device__ Ray(__in const Ray& cpy);
 	// Destructors
-	virtual ~Ray();
+	__host__ __device__ virtual ~Ray();
 
 private:
 	// Members
@@ -19,8 +19,8 @@ private:
 	
 public:
 	// Methods
-	const KPoint3& GetPoint() const;
-	const KVector3& GetDirection() const;
+	__host__ __device__ const KPoint3& GetPoint() const;
+	__host__ __device__ const KVector3& GetDirection() const;
 };
 
 Ray::Ray(const KPoint3& point, const KVector3& direction)

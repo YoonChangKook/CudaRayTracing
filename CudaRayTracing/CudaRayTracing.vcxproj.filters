@@ -51,6 +51,9 @@
     <ClInclude Include="KMath.h">
       <Filter>Header\Math</Filter>
     </ClInclude>
+    <ClInclude Include="KLinkedList.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="kernel.cu">

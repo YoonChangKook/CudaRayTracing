@@ -3,16 +3,18 @@
 
 #include "Object.h"
 
+#define SPHERE_TYPE 1
+
 class Sphere : public Object
 {
 public:
 	// Constructors
-	Sphere(__in const KPoint3& pos, float r, __in const Color& diffuse,
+	__host__ __device__ Sphere(__in const KPoint3& pos, float r, __in const Color& diffuse,
 			__in const Color& specular, __in const float shininess,
 			__in const float reflectance, __in const float transmittance, __in const float density);
-	Sphere(__in const Sphere& cpy);
+	__host__ __device__ Sphere(__in const Sphere& cpy);
 	// Destructors
-	virtual ~Sphere();
+	__host__ __device__ virtual ~Sphere();
 
 private:
 	// Members
@@ -21,9 +23,10 @@ private:
 
 public:
 	// Methods
-	virtual Object* GetHeapCopy() const;
-	virtual void GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, __out bool& is_intersect) const;
-	virtual void GetNormal(__in const KPoint3& point, __out KVector3& normal) const;
+	__host__ __device__ virtual Object* GetHeapCopy() const;
+	__host__ __device__ virtual void GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, __out bool& is_intersect) const;
+	__host__ __device__ virtual void GetNormal(__in const KPoint3& point, __out KVector3& normal) const;
+	__host__ __device__ virtual int GetType() const;
 };
 
 // Constructors
@@ -51,7 +54,7 @@ Object* Sphere::GetHeapCopy() const
 void Sphere::GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, __out bool& is_intersect) const
 {
 	KVector3 c = position - ray.GetPoint();
-	double tc = c * ray.GetDirection();
+	float tc = c * ray.GetDirection();
 
 	// Check whether the sphere is behind the camera
 	if (tc <= 0)
@@ -60,7 +63,8 @@ void Sphere::GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_
 		return;
 	}
 
-	double b = sqrt(c * c - tc * tc);
+	float bSqr = MAX(0.0f, c * c - tc * tc);
+	float b = sqrtf(bSqr);
 
 	// Check whether the ray doesn't crash with the sphere
 	if (b > r)
@@ -69,8 +73,9 @@ void Sphere::GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_
 		return;
 	}
 
-	double tu = sqrt(r * r - b * b);
-	double t;
+	float tuSqr = MAX(0.0f, r * r - b * b);
+	float tu = sqrtf(tuSqr);
+	float t;
 
 	if (dist(ray.GetPoint(), position) > r)
 		t = tc - tu;
@@ -85,6 +90,11 @@ void Sphere::GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_
 void Sphere::GetNormal(__in const KPoint3& point, __out KVector3& normal) const
 {
 	normal = (point - this->position).Normalize();
+}
+
+int Sphere::GetType() const
+{
+	return SPHERE_TYPE;
 }
 
 #endif

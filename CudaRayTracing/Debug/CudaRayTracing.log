@@ -1,8 +1,4 @@
-﻿  
-  D:\Yoon\Cuda\CudaRayTracing\CudaRayTracing>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /FS /Zi /RTC1 /MDd " -o Debug\kernel.cu.obj "D:\Yoon\Cuda\CudaRayTracing\CudaRayTracing\kernel.cu" -clean 
-CUDACOMPILE : nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
-  kernel.cu
-  Compiling CUDA source file kernel.cu...
+﻿  Compiling CUDA source file kernel.cu...
   
   D:\Yoon\Cuda\CudaRayTracing\CudaRayTracing>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2015 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /FS /Zi /RTC1 /MDd " -o Debug\kernel.cu.obj "D:\Yoon\Cuda\CudaRayTracing\CudaRayTracing\kernel.cu" 
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
@@ -41,6 +37,9 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(6252): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7142): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7956): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(363): warning : a __device__ function("RayTracer::AddObject") redeclared without __device__, hence treated as a __host__ __device__ function
+d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(414): warning : a __device__ function("RayTracer::AddLight") redeclared without __device__, hence treated as a __host__ __device__ function
+D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(124): warning : variable "id" was declared but never referenced
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
@@ -77,6 +76,7 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(6252): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7142): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7956): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(124): warning : variable "id" was declared but never referenced
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
@@ -132,6 +132,7 @@ c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\device_functions
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\device_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\device_functions.h(774): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\device_functions.h(1618): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+CUDACOMPILE : ptxas warning : Stack size for entry function '_Z8RayTraceP9RayTracerPh' cannot be statically determined
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
@@ -144,6 +145,7 @@ c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(7956): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 CUDACOMPILE : nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
   kernel.cu
+D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(124): warning C4101: 'id' :참조되지 않은 지역 변수입니다.
   CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\Debug\CudaRayTracing.exe
   CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\Debug\CudaRayTracing.pdb (Full PDB)
   copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\cudart*.dll" "D:\Yoon\Cuda\CudaRayTracing\Debug\"
