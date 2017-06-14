@@ -45,18 +45,24 @@ struct cudaGraphicsResource *cuda_pbo_resource;
 uchar4 *dev_data;
 // RayTracer
 RayTracer* ray_tracer;
-const int width = 1600;
-const int height = 900;
+const int width = 720;
+const int height = 480;
+// Camera
+KPoint3 camera_pos;
+KVector3 camera_up;
+KVector3 camera_look;
+float camera_fovx;
 
 // OpenGL
 bool is_camera_rotate = false;
+GLint beforePoint[2];
 
 //Camera camera;
 //KVector3 kvec, kvec2;
 //KPoint3 kpos;
 //Color diffuse, specular;
 //float fovx;
-//int id;
+int id;
 Camera* dev_camera;
 KVector3* dev_kvec, *dev_kvec2;
 KPoint3* dev_kpos;
@@ -86,7 +92,7 @@ void scene_modify_point_light(__in int id, __in const KPoint3& point, __in const
 
 // OPENGL Functions
 void mouse(__in int button, __in int state, __in int x, __in int y);
-void motion(__in int _x, __in int _y)
+void motion(__in int _x, __in int _y);
 
 void destroy_buffer(GLuint* buffer)
 {
@@ -98,10 +104,10 @@ void destroy_buffer(GLuint* buffer)
 void display_func()
 {
 	// TEST!!!
-	static float test_num = 0.0f;
-	test_num -= 0.1f;
-	scene_set_camera(KPoint3(15.0f + test_num, 5.0f, -25.0f), KVector3(0.0f, 1.0f, 0.0f),
-					KVector3(-7.0f, -5.0f, 20.0f), 120.0f);
+	//static float test_num = 0.0f;
+	//test_num -= 0.1f;
+	//scene_set_camera(KPoint3(15.0f + test_num, 5.0f, -25.0f), KVector3(0.0f, 1.0f, 0.0f),
+	//				KVector3(-7.0f, -5.0f, 20.0f), 120.0f);
 
 	glClearColor(0, 1, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -111,7 +117,7 @@ void display_func()
 	cudaGraphicsMapResources(1, &cuda_pbo_resource, NULL);
 	cudaGraphicsResourceGetMappedPointer((void **)&dev_data, &size, cuda_pbo_resource);
 	
-	dim3 dimGrim(50, 30);
+	dim3 dimGrim(30, 20);
 	dim3 dimBlock(width / dimGrim.x, height / dimGrim.y);
 	clock_t time_st = clock();
 	RayTrace << <dimGrim, dimBlock >> > (ray_tracer, (unsigned char*)dev_data);
@@ -142,6 +148,8 @@ int main(int argc, char* argv[])
 
 	// 콜백 함수 등록
 	glutDisplayFunc(display_func);
+	glutMouseFunc(mouse);
+	glutMotionFunc(motion);
 	//glutReshapeFunc(Reshape);
 	//glutCloseFunc(Close);
 
@@ -186,18 +194,21 @@ int main(int argc, char* argv[])
 	cudaMalloc((void**)&dev_id, sizeof(int));
 
 	// Camera
-	scene_set_camera(KPoint3(15.0f, 5.0f, -25.0f), KVector3(0.0f, 1.0f, 0.0f),
-					KVector3(-7.0f, -5.0f, 20.0f), 120.0f);
+	camera_pos = KPoint3(0.0f, 0.0f, -20.0f);
+	camera_up = KVector3(0.0f, 1.0f, 0.0f);
+	camera_look = KVector3(0.0f, 0.0f, 1.0f);
+	camera_fovx = 120.0f;
+	scene_set_camera(camera_pos, camera_up, camera_look, camera_fovx);
 
 	// Light
-	scene_add_point_light(KPoint3(0.0f, 10.5f, 0.0f), Color(200, 200, 200), id);
+	scene_add_point_light(KPoint3(0.0f, 15.0f, 0.0f), Color(200, 200, 200), id);
 
 	// 구 25개
 	for(int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++)
 		{
-			scene_add_sphere(KPoint3(i * 3.0f - 6.0f, -0.5f, j * 3.0f - 6.0f), Color(i * 30 + 100, j * 30 + 100, 0),
-							Color(200, 200, 200), 0.5f, 20.0f, 0.25f, 0.0f, 1.2f, id);
+			scene_add_sphere(KPoint3(i * 3.0f - 6.0f, 0.0f, j * 3.0f - 6.0f), Color(i * 30 + 100, j * 30 + 100, 0),
+							Color(200, 200, 200), 1.0f, 20.0f, 0.35f, 0.0f, 1.2f, id);
 		}
 
 	// 유리구슬 한개
@@ -205,8 +216,8 @@ int main(int argc, char* argv[])
 					Color(0, 0, 0), 0.5f, 20.0f, 0.0f, 1.0f, 1.705f, id);
 
 	// Plane
-	scene_add_plane(KVector3(0.0f, 1.0f, 0.0f), KPoint3(0.0f, -1.0f, 0.0f),
-					Color(140, 140, 140), Color(140, 140, 140), 30.0f, 0.0f, 0.0f, 1.2f, id);
+	//scene_add_plane(KVector3(0.0f, 1.0f, 0.0f), KPoint3(0.0f, -1.0f, 0.0f),
+	//				Color(140, 140, 140), Color(140, 140, 140), 30.0f, 0.3f, 0.0f, 1.2f, id);
 
 	SetImageResolution<<<1, 1>>>(ray_tracer, width, height);
 
@@ -305,54 +316,60 @@ void scene_modify_point_light(__in int id, __in const KPoint3& point, __in const
 }
 
 // OPENGL FUNC
-//void mouse(__in int button, __in int state, __in int x, __in int y)
-//{
-//	// Todo :  회전, 이동, 크기 변환을 위한 마우스 부분
-//	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-//	{
-//		is_camera_rotate = true;
-//		beforePoint[0] = x;
-//		beforePoint[1] = y;
-//	}
-//
-//	if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP)
-//		is_camera_rotate = false;
-//}
-//void motion(int _x, int _y)
-//{
-//	// 오른쪽 클릭하고 드래그 시 카메라 회전
-//	if (g_cameraRotate)
-//	{
-//		GLfloat l[3], r[3], u[3];
-//		GLfloat newEye[3];
-//		GLfloat eyeToNewEye[2];
-//
-//		eyeToNewEye[0] = (_x - beforePoint[0]);
-//		eyeToNewEye[1] = (_y - beforePoint[1]);
-//
-//		for (int i = 0; i < 3; i++)
-//			l[i] = -g_cameraPoint[i] / g_vectorLength;
-//
-//		r[0] = -l[2];
-//		r[1] = 0;
-//		r[2] = l[0];
-//
-//		u[0] = -l[0] * l[1];
-//		u[1] = l[2] * l[2] + l[0] * l[0];
-//		u[2] = -l[1] * l[2];
-//
-//		for (int i = 0; i < 3; i++)
-//			newEye[i] = g_cameraPoint[i] + r[i] * (-eyeToNewEye[0]) + u[i] * eyeToNewEye[1];
-//
-//		GLfloat newEyeLength = sqrt(newEye[0] * newEye[0] + newEye[1] * newEye[1] + newEye[2] * newEye[2]);
-//
-//		for (int i = 0; i < 3; i++)
-//			newEye[i] = g_vectorLength * newEye[i] / newEyeLength;
-//
-//		for (int i = 0; i < 3; i++)
-//			g_cameraPoint[i] = newEye[i];
-//
-//		beforePoint[0] = _x;
-//		beforePoint[1] = _y;
-//	}
-//}
+void mouse(__in int button, __in int state, __in int x, __in int y)
+{
+	// Todo :  회전, 이동, 크기 변환을 위한 마우스 부분
+	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+	{
+		is_camera_rotate = true;
+		beforePoint[0] = x;
+		beforePoint[1] = y;
+	}
+	
+	if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP)
+		is_camera_rotate = false;
+}
+void motion(__in int _x, __in int _y)
+{
+	// 오른쪽 클릭하고 드래그 시 카메라 회전
+	if (is_camera_rotate)
+	{
+		KVector3 l, r, u;
+		KPoint3 newEye;
+		GLfloat eyeToNewEye[2];
+	
+		eyeToNewEye[0] = (_x - beforePoint[0]);
+		eyeToNewEye[1] = (_y - beforePoint[1]);
+	
+		for (int i = 0; i < 3; i++)
+			l[i] = -camera_pos[i] / 20.0f;
+	
+		r[0] = -l[2];
+		r[1] = 0;
+		r[2] = l[0];
+	
+		u[0] = -l[0] * l[1];
+		u[1] = l[2] * l[2] + l[0] * l[0];
+		u[2] = -l[1] * l[2];
+	
+		for (int i = 0; i < 3; i++)
+			newEye[i] = camera_pos[i] + r[i] * 0.2f * (-eyeToNewEye[0]) + u[i] * 0.2f * eyeToNewEye[1];
+	
+		GLfloat newEyeLength = sqrtf(newEye[0] * newEye[0] + newEye[1] * newEye[1] + newEye[2] * newEye[2]);
+	
+		for (int i = 0; i < 3; i++)
+			newEye[i] = 20.0f * newEye[i] / newEyeLength;
+	
+		camera_pos = newEye;
+	
+		camera_look[0] = -camera_pos[0];
+		camera_look[1] = -camera_pos[1];
+		camera_look[2] = -camera_pos[2];
+	
+		beforePoint[0] = _x;
+		beforePoint[1] = _y;
+
+		scene_set_camera(camera_pos, camera_up, camera_look, camera_fovx);
+		glutPostRedisplay();
+	}
+}

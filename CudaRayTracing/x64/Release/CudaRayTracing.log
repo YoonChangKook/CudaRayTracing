@@ -151,6 +151,8 @@ d:\yoon\cuda\cudaraytracing\cudaraytracing\KMath.h(449): warning C4244: '=': 'do
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Camera.h(69): warning C4244: '인수': 'int'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Color.h(92): warning C4244: '*=': 'const double'에서 'unsigned char'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Color.h(137): warning C4244: '*=': 'const double'에서 'unsigned char'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(341): warning C4244: '=': 'GLint'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(342): warning C4244: '=': 'GLint'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   LINK : /LTCG를 지정했지만 코드를 생성할 필요가 없습니다. 명령줄에서 /LTCG를 제거하면 링커 성능이 향상됩니다.
   CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\x64\Release\CudaRayTracing.exe
   CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\x64\Release\CudaRayTracing.pdb (Full PDB)
