@@ -22,11 +22,13 @@ private:
 
 public:
 	// Methods
+	__host__ __device__ Triangle& operator =(const Triangle& other);
 	__host__ __device__ virtual Object* GetHeapCopy() const;
 	__host__ __device__ virtual void GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, __out bool& is_intersect) const;
 	__host__ __device__ virtual void GetNormal(__in const KPoint3& point, __out KVector3& normal) const;
 	__host__ __device__ virtual void GetNormal(__out KVector3& normal) const;	// overload
 	__host__ __device__ virtual int GetType() const;
+	__host__ __device__ virtual KPoint3 GetPosition() const;
 };
 
 Triangle::Triangle(__in const KPoint3 points[3], __in const Color& diffuse,
@@ -42,6 +44,22 @@ Triangle::Triangle(__in const Triangle& cpy)
 
 Triangle::~Triangle()
 {}
+
+Triangle& Triangle::operator =(const Triangle& other)
+{
+	this->ambient = other.ambient;
+	this->diffuse = other.diffuse;
+	this->specular = other.specular;
+	this->shininess = other.shininess;
+	this->reflectance = other.reflectance;
+	this->transmittance = other.transmittance;
+	this->density = other.density;
+	this->id = other.id;
+	for (int i = 0; i < 3; i++)
+		this->points[i] = other.points[i];
+
+	return *this;
+}
 
 Object* Triangle::GetHeapCopy() const
 {
@@ -119,6 +137,13 @@ void Triangle::GetNormal(__out KVector3& normal) const
 int Triangle::GetType() const
 {
 	return TRIANGLE_TYPE;
+}
+
+KPoint3 Triangle::GetPosition() const
+{
+	return KPoint3((this->points[0][0] + this->points[1][0] + this->points[2][0]) / 3,
+					(this->points[0][1] + this->points[1][1] + this->points[2][1]) / 3,
+					(this->points[0][2] + this->points[1][2] + this->points[2][2]) / 3);
 }
 
 #endif

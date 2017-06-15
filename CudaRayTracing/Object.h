@@ -19,7 +19,7 @@ public:
 	// Destructors
 	__host__ __device__ virtual ~Object();
 
-private:
+protected:
 	// Static Members
 	//const float ambient_ratio = 20 / 255.0f;
 	// Members
@@ -30,17 +30,25 @@ private:
 	float reflectance;
 	float transmittance;
 	float density;
+	int id;
 
 public:
 	// Methods
+	__host__ __device__ Color GetDiffuse() const;
+	__host__ __device__ Color GetSpecular() const;
+	__host__ __device__ float GetShininess() const;
 	__host__ __device__ float GetReflectance() const;
 	__host__ __device__ float GetTransmittance() const;
 	__host__ __device__ float GetDensity() const;
-	__host__ __device__ virtual Object* GetHeapCopy() const = 0;
+	__host__ __device__ void SetID(int id);
+	__host__ __device__ int GetID() const;
+	__host__ __device__ Object& operator =(const Object& other);
 	// Abstract Method
+	__host__ __device__ virtual Object* GetHeapCopy() const = 0;
 	__host__ __device__ virtual void GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, __out bool& is_intersect) const = 0;
 	__host__ __device__ virtual void GetNormal(__in const KPoint3& point, __out KVector3& normal) const = 0;
 	__host__ __device__ virtual int GetType() const = 0;
+	__host__ __device__ virtual KPoint3 GetPosition() const = 0;
 	// Virtual Method
 	__host__ __device__ virtual void Local_Illumination(__in const KPoint3& point, __in const KVector3& normal,
 									__in const Ray& ray, __in const PointLight& light, 
@@ -53,8 +61,8 @@ public:
 Object::Object(__in const Color& diffuse, __in const Color& specular,
 	__in const float shininess, __in const float reflectance,
 	__in const float transmittance, __in const float density)
-	: ambient(diffuse * AMBIENT_RATIO), diffuse(diffuse), specular(specular),
-	shininess(shininess), reflectance(reflectance), transmittance(transmittance), density(density)
+	: ambient(diffuse * AMBIENT_RATIO), diffuse(diffuse), specular(specular), shininess(shininess), 
+	reflectance(reflectance), transmittance(transmittance), density(density), id(-1)
 {}
 
 Object::Object(__in const Object& cpy)
@@ -64,6 +72,21 @@ Object::Object(__in const Object& cpy)
 
 Object::~Object()
 {}
+
+Color Object::GetDiffuse() const
+{
+	return this->diffuse;
+}
+
+Color Object::GetSpecular() const
+{
+	return this->specular;
+}
+
+float Object::GetShininess() const
+{
+	return this->shininess;
+}
 
 float Object::GetReflectance() const
 {
@@ -78,6 +101,30 @@ float Object::GetTransmittance() const
 float Object::GetDensity() const
 {
 	return this->density;
+}
+
+void Object::SetID(int id)
+{
+	this->id = id;
+}
+
+int Object::GetID() const
+{
+	return this->id;
+}
+
+Object& Object::operator =(const Object& other)
+{
+	this->ambient = other.ambient;
+	this->diffuse = other.diffuse;
+	this->specular = other.specular;
+	this->shininess = other.shininess;
+	this->reflectance = other.reflectance;
+	this->transmittance = other.transmittance;
+	this->density = other.density;
+	this->id = other.id;
+
+	return *this;
 }
 
 void Object::Local_Illumination(__in const KPoint3& point, __in const KVector3& normal,

@@ -19,6 +19,9 @@
     <Filter Include="Header\Math">
       <UniqueIdentifier>{66a86ed0-84cb-42f4-9a8e-0bcb7b11d910}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header\DataStructure">
+      <UniqueIdentifier>{f0151fe9-94be-401c-a77c-acb6ff21c964}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -53,6 +56,9 @@
     </ClInclude>
     <ClInclude Include="KLinkedList.h">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CudaVector.h">
+      <Filter>Header\DataStructure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

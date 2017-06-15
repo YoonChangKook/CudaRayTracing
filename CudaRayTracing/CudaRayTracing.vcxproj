@@ -225,6 +225,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="CudaVector.h" />
     <ClInclude Include="KLinkedList.h" />
     <ClInclude Include="KMath.h" />
     <ClInclude Include="Object.h" />

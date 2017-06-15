@@ -39,8 +39,13 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include\math_functions.h(7956): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 d:\yoon\cuda\cudaraytracing\cudaraytracing\KMath.h(21): warning C4005: 'MIN': 매크로 재정의
 d:\yoon\cuda\cudaraytracing\cudaraytracing\KMath.h(22): warning C4005: 'MAX': 매크로 재정의
-d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(372): warning : a __device__ function("RayTracer::AddObject") redeclared without __device__, hence treated as a __host__ __device__ function
-d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(451): warning : a __device__ function("RayTracer::AddLight") redeclared without __device__, hence treated as a __host__ __device__ function
+d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(108): warning : a __device__ function("RayTracer::RayTracer") redeclared without __device__, hence treated as a __host__ __device__ function
+d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(113): warning : a __device__ function("RayTracer::~RayTracer") redeclared without __device__, hence treated as a __host__ __device__ function
+d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(131): warning : a __device__ function("RayTracer::Trace") redeclared without __device__, hence treated as a __host__ __device__ function
+d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(154): warning : a __device__ function("RayTracer::Shade") redeclared without __device__, hence treated as a __host__ __device__ function
+d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(235): warning : a __device__ function("RayTracer::Closest_intersection") redeclared without __device__, hence treated as a __host__ __device__ function
+d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(320): warning : a __device__ function("RayTracer::AddObject") redeclared without __device__, hence treated as a __host__ __device__ function
+d:\yoon\cuda\cudaraytracing\cudaraytracing\RayTracer.h(378): warning : a __device__ function("RayTracer::AddLight") redeclared without __device__, hence treated as a __host__ __device__ function
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(849): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
 c:\program files\nvidia gpu computing toolkit\cuda\v8.0\include\math_functions.h(1787): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
@@ -151,8 +156,9 @@ d:\yoon\cuda\cudaraytracing\cudaraytracing\KMath.h(449): warning C4244: '=': 'do
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Camera.h(69): warning C4244: '인수': 'int'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Color.h(92): warning C4244: '*=': 'const double'에서 'unsigned char'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 d:\yoon\cuda\cudaraytracing\cudaraytracing\Color.h(137): warning C4244: '*=': 'const double'에서 'unsigned char'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(341): warning C4244: '=': 'GLint'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(342): warning C4244: '=': 'GLint'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(386): warning C4244: '인수': 'int'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(414): warning C4244: '=': 'GLint'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:/Yoon/Cuda/CudaRayTracing/CudaRayTracing/kernel.cu(415): warning C4244: '=': 'GLint'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   LINK : /LTCG를 지정했지만 코드를 생성할 필요가 없습니다. 명령줄에서 /LTCG를 제거하면 링커 성능이 향상됩니다.
   CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\x64\Release\CudaRayTracing.exe
   CudaRayTracing.vcxproj -> D:\Yoon\Cuda\CudaRayTracing\x64\Release\CudaRayTracing.pdb (Full PDB)

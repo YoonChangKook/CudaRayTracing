@@ -12,9 +12,8 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Triangle.h"
+#include "CudaVector.h"
 
-#define TEMP_OBJECT_POOL_SIZE	30
-#define TEMP_LIGHT_POOL_SIZE	3
 #define RECURSIVE_NUM			5
 #define CUDA_FUNC				__host__ __device__
 #define CUDA_GLOBAL				__global__
@@ -23,23 +22,20 @@ class RayTracer
 {
 public:
 	// Constructors
-	 RayTracer();
+	__device__ RayTracer();
 	// Destructors
-	 ~RayTracer();
+	__device__ ~RayTracer();
 
 private:
-	//const int recursive_num = 5;
 	// Members
 	Color** pixels;
 	int width;
 	int height;
 	Camera camera;
-	//std::unordered_map<int, PointLight*> lights;
-	PointLight* lights[TEMP_LIGHT_POOL_SIZE];
+	Cuda::Vector<PointLight*> lights;
 	int light_id_counter;
 	int light_count;
-	//std::unordered_map<int, Object*> objects;
-	Object* objects[TEMP_OBJECT_POOL_SIZE];
+	Cuda::Vector<Object*> objects;
 	int object_id_counter;
 	int object_count;
 	// Private Methods
@@ -48,20 +44,20 @@ private:
 	*	recur_num is current recursive num, and pass_obj_id is the last object id crashed with ray.
 	*	if pass_obj_id is -1, nothing crashed before trace call.
 	*/
-	__host__ __device__ void Trace(__in const Ray& ray, __in const int recur_num,
+	__device__ void Trace(__in const Ray& ray, __in const int recur_num,
 			__in const int pass_obj_id, __out Color& color);
 	/*
 	*	called in Trace function.
 	*	calculate color in point.
 	*	intersected_obj_id is 
 	*/
-	__host__ __device__ void Shade(__in const KPoint3& point, __in const KVector3& normal,
+	__device__ void Shade(__in const KPoint3& point, __in const KVector3& normal,
 			__in const int intersected_obj_id, __in const Ray& ray,
 			__in const int recur_num, __out Color& color);
 	/*
 	*	find nearest intersection point from ray's origin
 	*/
-	__host__ __device__ void Closest_intersection(__out KPoint3& out_point, __out KVector3& out_normal,
+	__device__ void Closest_intersection(__out KPoint3& out_point, __out KVector3& out_normal,
 							__out int& intersected_obj_id, __in const Ray& ray, 
 							__in const int pass_obj_id);
 	//__host__ bool CreateImage(const char *outFileName);
@@ -105,11 +101,13 @@ public:
 	__global__ friend void GetAllObjectIDs(__in RayTracer* const ray_tracer, __out int ids[]);
 	__global__ friend void GetAllLightIDs(__in RayTracer* const ray_tracer, __out int ids[]);
 
+	__global__ friend void GetClickedObj(__in RayTracer* const ray_tracer, __in int screen_x, __in int screen_y, __out int* id);
+	__global__ friend void GetObjectPosition(__in RayTracer* const ray_tracer, __in int id, __out KPoint3* pos);
 };
 
 RayTracer::RayTracer()
 	: pixels(), width(0), height(0), camera(), light_id_counter(0), object_id_counter(0),
-	light_count(0), object_count(0), lights{NULL, }, objects{NULL, }
+	light_count(0), object_count(0), lights(), objects()
 {}
 
 RayTracer::~RayTracer()
@@ -118,12 +116,12 @@ RayTracer::~RayTracer()
 		delete[] pixels[i];
 	delete[] pixels;
 
-	for (int i = 0; i < TEMP_OBJECT_POOL_SIZE; i++)
+	for (int i = 0; i < this->objects.size(); i++)
 	{
 		if (this->objects[i] != NULL)
 			delete this->objects[i];
 	}
-	for (int i = 0; i < TEMP_LIGHT_POOL_SIZE; i++)
+	for (int i = 0; i < this->lights.size(); i++)
 	{
 		if (this->lights[i] != NULL)
 			delete this->lights[i];
@@ -159,7 +157,7 @@ void RayTracer::Shade(__in const KPoint3& point, __in const KVector3& normal,
 {
 	Color total;
 
-	for(int i = 0; i < TEMP_LIGHT_POOL_SIZE; i++)
+	for(int i = 0; i < this->lights.size(); i++)
 	{
 		if (this->lights[i] == NULL)
 			continue;
@@ -243,7 +241,7 @@ void RayTracer::Closest_intersection(__out KPoint3& out_point, __out KVector3& o
 	bool is_intersected = false;
 
 	// loop per each object
-	for(int i = 0; i < TEMP_OBJECT_POOL_SIZE; i++)
+	for(int i = 0; i < this->objects.size(); i++)
 	{
 		if (this->objects[i] == NULL)
 			continue;
@@ -293,45 +291,11 @@ __global__ void RayTrace(__in RayTracer* const ray_tracer, unsigned char* buffer
 	// start ray tracing about pixel(i, j)
 	ray_tracer->Trace(ray, RECURSIVE_NUM, -1, pixel);
 
-	//ray_tracer->pixels[i][j] = pixel;
 	buffer[4 * (ray_tracer->width * (ray_tracer->height - 1 - j) + i) + 0] = pixel[0];
 	buffer[4 * (ray_tracer->width * (ray_tracer->height - 1 - j) + i) + 1] = pixel[1];
 	buffer[4 * (ray_tracer->width * (ray_tracer->height - 1 - j) + i) + 2] = pixel[2];
 	buffer[4 * (ray_tracer->width * (ray_tracer->height - 1 - j) + i) + 3] = 255;
 }
-
-/*bool RayTracer::CreateImage(const char *outFileName)
-{
-	// save image as ppm file
-	FILE *fp = NULL;
-	if (fopen_s(&fp, outFileName, "wb") != 0)
-		return false;
-
-	Color** temp_pixels;
-	temp_pixels = new Color*[width];
-	for (int i = 0; i < width; i++)
-		temp_pixels[i] = new Color[height];
-	
-	cudaMemcpy(temp_pixels, this->pixels, sizeof(Color) * width * height, cudaMemcpyDeviceToHost);
-
-	fprintf(fp, "P6\n");
-	fprintf(fp, "%d\n", width);
-	fprintf(fp, "%d\n", height);
-	fprintf(fp, "%d\n", 255);
-	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
-			for (int k = 0; k < 3; k++)
-				fprintf(fp, "%d", temp_pixels[j][i][k]);
-	//fwrite(data, sizeof(unsigned char), width * height * 3, fp);
-
-	fclose(fp);
-
-	for (int i = 0; i < height; i++)
-		delete[] temp_pixels[i];
-	delete[] temp_pixels;
-
-	return true;
-}*/
 
 __global__ void CopyColors(__in RayTracer* const ray_tracer, __out unsigned char* buffer)
 {
@@ -343,19 +307,6 @@ __global__ void CopyColors(__in RayTracer* const ray_tracer, __out unsigned char
 
 __global__ void SetImageResolution(__in RayTracer* const ray_tracer, __in int width, __in int height)
 {
-	// delete
-	//if (ray_tracer->width != 0 || ray_tracer->height != 0)
-	//{
-	//	for (int i = 0; i < ray_tracer->width; i++)
-	//		delete[] ray_tracer->pixels[i];
-	//	delete[] ray_tracer->pixels;
-	//}
-	//
-	//// new
-	//ray_tracer->pixels = new Color*[width];
-	//for (int i = 0; i < width; i++)
-	//	ray_tracer->pixels[i] = new Color[height];
-
 	ray_tracer->width = width;
 	ray_tracer->height = height;
 }
@@ -363,37 +314,14 @@ __global__ void SetImageResolution(__in RayTracer* const ray_tracer, __in int wi
 __global__ void SetCamera(__in RayTracer* const ray_tracer, __in const KPoint3* const pos,
 						__in const KVector3* const up, __in const KVector3* const look, float* fovx)
 {
-	//printf("pos: %f, %f, %f\n", (*pos)[0], (*pos)[1], (*pos)[2]);
-	//printf("up: %f, %f, %f\n", (*up)[0], (*up)[1], (*up)[2]);
-	//printf("look: %f, %f, %f\n", (*look)[0], (*look)[1], (*look)[2]);
 	ray_tracer->camera = Camera(*pos, *up, *look, *fovx);
 }
 
 void RayTracer::AddObject(__in const Object& obj, __out int* id)
 {
-	if (this->object_count > TEMP_OBJECT_POOL_SIZE)
-	{
-		*id = -1;
-		return;
-	}
-
-	this->objects[this->object_id_counter] = obj.GetHeapCopy();
-	object_count++;
-	while (true)
-	{
-		if (this->object_count > TEMP_OBJECT_POOL_SIZE)
-		{
-			*id = this->object_id_counter;
-			return;
-		}
-
-		this->object_id_counter = ((this->object_id_counter + 1) % TEMP_OBJECT_POOL_SIZE);
-		if (this->objects[object_id_counter] == NULL)
-		{
-			*id = this->object_id_counter;
-			return;
-		}
-	}
+	this->objects.push_back(obj.GetHeapCopy());
+	this->objects.back()->SetID(this->objects.size() - 1);
+	*id = this->objects.back()->GetID();
 }
 
 __global__ void AddSphere(__in RayTracer* const ray_tracer, __in const KPoint3* const pos, float r, __in const Color* const diffuse,
@@ -410,15 +338,16 @@ __global__ void ModifySphere(__in int id, __in RayTracer* const ray_tracer, __in
 						__in const Color* const diffuse, __in const Color* const specular, __in const float shininess,
 						__in const float reflectance, __in const float transmittance, __in const float density)
 {
-	if (id >= TEMP_OBJECT_POOL_SIZE || id <= 0)
+	if (id >= ray_tracer->objects.size() || id < 0)
 		return;
 	if (ray_tracer->objects[id] == NULL)
 		return;
 	if (ray_tracer->objects[id]->GetType() != SPHERE_TYPE)
 		return;
 
-	*ray_tracer->objects[id] = Sphere(*pos, r, *diffuse, *specular, shininess,
-									reflectance, transmittance, density);
+	printf("id, type: %d, %d\n", id, ray_tracer->objects[id]->GetType());
+	*((Sphere*)ray_tracer->objects[id]) = Sphere(*pos, r, *diffuse, *specular, shininess,
+												reflectance, transmittance, density);
 }
 
 __global__ void AddPlane(__in RayTracer* const ray_tracer, __in const KVector3* const normal, __in const KPoint3* const point, __in const Color* const diffuse,
@@ -426,8 +355,6 @@ __global__ void AddPlane(__in RayTracer* const ray_tracer, __in const KVector3* 
 						__in const float transmittance, __in const float density,
 						__out int* id)
 {
-	//printf("diffuse: %d, %d, %d\n", (*diffuse)[0], (*diffuse)[1], (*diffuse)[2]);
-	//printf("specular: %d, %d, %d\n", (*specular)[0], (*specular)[1], (*specular)[2]);
 	Plane temp(*normal, *point, *diffuse, *specular, 
 				shininess, reflectance, transmittance, density);
 
@@ -437,68 +364,45 @@ __global__ void ModifyPlane(__in int id, __in RayTracer* const ray_tracer, __in 
 	__in const Color* const specular, __in const float shininess, __in const float reflectance,
 	__in const float transmittance, __in const float density)
 {
-	if (id >= TEMP_OBJECT_POOL_SIZE || id <= 0)
+	if (id >= ray_tracer->objects.size() || id < 0)
 		return;
 	if (ray_tracer->objects[id] == NULL)
 		return;
 	if (ray_tracer->objects[id]->GetType() != PLANE_TYPE)
 		return;
-
-	*ray_tracer->objects[id] = Plane(*normal, *point, *diffuse, *specular,
-									shininess, reflectance, transmittance, density);
+	
+	*((Plane*)ray_tracer->objects[id]) = Plane(*normal, *point, *diffuse, *specular,
+											shininess, reflectance, transmittance, density);
 }
 
 void RayTracer::AddLight(__in const PointLight& light, __out int* id)
 {
-	if (this->light_count > TEMP_LIGHT_POOL_SIZE)
-	{
-		*id = -1;
-		return;
-	}
-
-	this->lights[this->light_id_counter] = light.GetHeapCopy();
-	light_count++;
-	while (true)
-	{
-		if (this->light_count > TEMP_LIGHT_POOL_SIZE)
-		{
-			*id = this->light_id_counter;
-			return;
-		}
-
-		this->light_id_counter = ((this->light_id_counter + 1) % TEMP_LIGHT_POOL_SIZE);
-		if (this->lights[light_id_counter] == NULL)
-		{
-			*id = this->light_id_counter;
-			return;
-		}
-	}
+	this->lights.push_back(light.GetHeapCopy());
+	this->lights.back()->SetID(this->lights.size() - 1);
+	*id = this->lights.back()->GetID();
 }
 
 __global__ void AddPointLight(__in RayTracer* const ray_tracer, __in const KPoint3* const pos, __in const Color* const color, __out int* id)
 {
-	//printf("pos: %f, %f, %f\n", (*pos)[0], (*pos)[1], (*pos)[2]);
-	//printf("color: %d, %d, %d\n", (*color)[0], (*color)[1], (*color)[2]);
-
 	PointLight temp(*pos, *color);
 
 	ray_tracer->AddLight(temp, id);
 }
 __global__ void ModifyPointLight(__in int id, __in RayTracer* const ray_tracer, __in const KPoint3* const pos, __in const Color* const color)
 {
-	if (id >= TEMP_LIGHT_POOL_SIZE || id <= 0)
+	if (id >= ray_tracer->lights.size() || id < 0)
 		return;
 	if (ray_tracer->lights[id] == NULL)
 		return;
 	if (ray_tracer->lights[id]->GetType() != POINT_LIGHT_TYPE)
 		return;
 
-	*ray_tracer->lights[id] = PointLight(*pos, *color);
+	*((PointLight*)ray_tracer->lights[id]) = PointLight(*pos, *color);
 }
 
 __global__ void DeleteObject(__in RayTracer* const ray_tracer, __in int id)
 {
-	if (id >= TEMP_OBJECT_POOL_SIZE || id < 0)
+	if (id >= ray_tracer->objects.size() || id < 0)
 		return;
 
 	if (ray_tracer->objects[id] != NULL)
@@ -507,7 +411,7 @@ __global__ void DeleteObject(__in RayTracer* const ray_tracer, __in int id)
 
 __global__ void DeleteLight(__in RayTracer* const ray_tracer, __in int id)
 {
-	if (id >= TEMP_LIGHT_POOL_SIZE || id < 0)
+	if (id >= ray_tracer->lights.size() || id < 0)
 		return;
 
 	if (ray_tracer->lights[id] != NULL)
@@ -516,26 +420,53 @@ __global__ void DeleteLight(__in RayTracer* const ray_tracer, __in int id)
 
 __global__ void GetObjectCount(__in RayTracer* const ray_tracer, __out int* count)
 {
-	*count = TEMP_OBJECT_POOL_SIZE;
+	*count = ray_tracer->objects.size();
 }
 
 __global__ void GetLightCount(__in RayTracer* const ray_tracer, __out int* count)
 {
-	*count = TEMP_LIGHT_POOL_SIZE;
+	*count = ray_tracer->lights.size();
 }
 
 __global__ void GetAllObjectIDs(__in RayTracer* const ray_tracer, __out int ids[])
 {
-	for (int i = 0, idx = 0; i < TEMP_OBJECT_POOL_SIZE; i++)
+	for (int i = 0, idx = 0; i < ray_tracer->objects.size(); i++)
 		if (ray_tracer->objects[i] != NULL)
 			ids[idx++] = i;
 }
 
 __global__ void GetAllLightIDs(__in RayTracer* const ray_tracer, __out int ids[])
 {
-	for (int i = 0, idx = 0; i < TEMP_LIGHT_POOL_SIZE; i++)
+	for (int i = 0, idx = 0; i < ray_tracer->lights.size(); i++)
 		if (ray_tracer->lights[i] != NULL)
 			ids[idx++] = i;
+}
+
+__global__ void GetClickedObj(__in RayTracer* const ray_tracer, __in int screen_x, __in int screen_y, __out int* id)
+{
+	KVector3 o = ray_tracer->camera.GetScreenO(ray_tracer->width, ray_tracer->height);
+	KPoint3 pos = ray_tracer->camera.GetEyePosition();
+	KVector3 dir = o +
+		screen_x * ray_tracer->camera.GetScreenU() +
+		screen_y * ray_tracer->camera.GetScreenV();
+	dir = dir.Normalize();
+	Ray ray(pos, dir);
+
+	// find the nearest intersection point
+	int intersected_obj_id = -1;
+	KPoint3 intersected_point;
+	KVector3 normal;
+	ray_tracer->Closest_intersection(intersected_point, normal, intersected_obj_id,
+									ray, -1);
+
+	// if clicked, return id
+	if (intersected_obj_id >= 0)
+		*id = intersected_obj_id;
+}
+
+__global__ void GetObjectPosition(__in RayTracer* const ray_tracer, __in int id, __out KPoint3* pos)
+{
+	*pos = ray_tracer->objects[id]->GetPosition();
 }
 
 #endif

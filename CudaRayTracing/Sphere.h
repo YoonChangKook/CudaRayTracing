@@ -23,10 +23,13 @@ private:
 
 public:
 	// Methods
+	__host__ __device__ float GetR() const;
+	__host__ __device__ Sphere& operator =(const Sphere& other);
 	__host__ __device__ virtual Object* GetHeapCopy() const;
 	__host__ __device__ virtual void GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, __out bool& is_intersect) const;
 	__host__ __device__ virtual void GetNormal(__in const KPoint3& point, __out KVector3& normal) const;
 	__host__ __device__ virtual int GetType() const;
+	__host__ __device__ virtual KPoint3 GetPosition() const;
 };
 
 // Constructors
@@ -46,6 +49,27 @@ Sphere::~Sphere()
 {}
 
 // Methods
+float Sphere::GetR() const
+{
+	return this->r;
+}
+
+Sphere& Sphere::operator =(const Sphere& other)
+{
+	this->ambient = other.ambient;
+	this->diffuse = other.diffuse;
+	this->specular = other.specular;
+	this->shininess = other.shininess;
+	this->reflectance = other.reflectance;
+	this->transmittance = other.transmittance;
+	this->density = other.density;
+	this->id = other.id;
+	this->position = other.position;
+	this->r = other.r;
+
+	return *this;
+}
+
 Object* Sphere::GetHeapCopy() const
 {
 	return new Sphere(*this);
@@ -95,6 +119,11 @@ void Sphere::GetNormal(__in const KPoint3& point, __out KVector3& normal) const
 int Sphere::GetType() const
 {
 	return SPHERE_TYPE;
+}
+
+KPoint3 Sphere::GetPosition() const
+{
+	return this->position;
 }
 
 #endif

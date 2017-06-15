@@ -22,23 +22,27 @@ private:
 	// Members
 	KPoint3 position;
 	Color color;
+	int id;
 	// Static Members
 	//const float distance_value[3] = { 0.0f, 0.5f, 0.25f };
 
 public:
 	// Methods
+	__host__ __device__ PointLight& operator =(const PointLight& other);
 	__host__ __device__ virtual PointLight* GetHeapCopy() const;
 	__host__ __device__ const KPoint3& GetPosition() const;
 	__host__ __device__ void GetColor(__out Color& color) const;
 	__host__ __device__ float GetDistanceTerm(__in float distance) const;
 	__host__ __device__ int GetType() const;
+	__host__ __device__ void SetID(int id);
+	__host__ __device__ int GetID() const;
 };
 
 // Static Member Initialize
 //const float PointLight::distance_value[3] = { 0.0f, 0.5f, 0.25f };
 
 PointLight::PointLight(__in const KPoint3& pos, __in const Color& color)
-	: position(pos), color(color)
+	: position(pos), color(color), id(-1)
 {}
 
 PointLight::PointLight(__in const PointLight& cpy)
@@ -47,6 +51,15 @@ PointLight::PointLight(__in const PointLight& cpy)
 
 PointLight::~PointLight()
 {}
+
+PointLight& PointLight::operator =(const PointLight& other)
+{
+	this->position = other.position;
+	this->color = other.color;
+	this->id = other.id;
+
+	return *this;
+}
 
 PointLight* PointLight::GetHeapCopy() const
 {
@@ -76,6 +89,16 @@ float PointLight::GetDistanceTerm(__in float distance) const
 int PointLight::GetType() const
 {
 	return POINT_LIGHT_TYPE;
+}
+
+void PointLight::SetID(int id)
+{
+	this->id = id;
+}
+
+int PointLight::GetID() const
+{
+	return this->id;
 }
 
 #endif

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unordered_map>
 #include <iostream>
 #include <time.h>
 //#include <gl/glew.h>
@@ -45,23 +46,25 @@ struct cudaGraphicsResource *cuda_pbo_resource;
 uchar4 *dev_data;
 // RayTracer
 RayTracer* ray_tracer;
-const int width = 720;
-const int height = 480;
+const int width = 1600;
+const int height = 900;
 // Camera
 KPoint3 camera_pos;
 KVector3 camera_up;
 KVector3 camera_look;
 float camera_fovx;
+Camera camera;
+// Objects
+std::unordered_map<int, Object*> objects;
+std::unordered_map<int, PointLight*> lights;
 
 // OpenGL
 bool is_camera_rotate = false;
+bool is_object_select = false;
 GLint beforePoint[2];
+int selected_object = -1;
+KPoint3 selected_object_pos;
 
-//Camera camera;
-//KVector3 kvec, kvec2;
-//KPoint3 kpos;
-//Color diffuse, specular;
-//float fovx;
 int id;
 Camera* dev_camera;
 KVector3* dev_kvec, *dev_kvec2;
@@ -103,12 +106,6 @@ void destroy_buffer(GLuint* buffer)
 
 void display_func()
 {
-	// TEST!!!
-	//static float test_num = 0.0f;
-	//test_num -= 0.1f;
-	//scene_set_camera(KPoint3(15.0f + test_num, 5.0f, -25.0f), KVector3(0.0f, 1.0f, 0.0f),
-	//				KVector3(-7.0f, -5.0f, 20.0f), 120.0f);
-
 	glClearColor(0, 1, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -117,7 +114,7 @@ void display_func()
 	cudaGraphicsMapResources(1, &cuda_pbo_resource, NULL);
 	cudaGraphicsResourceGetMappedPointer((void **)&dev_data, &size, cuda_pbo_resource);
 	
-	dim3 dimGrim(30, 20);
+	dim3 dimGrim(50, 30);
 	dim3 dimBlock(width / dimGrim.x, height / dimGrim.y);
 	clock_t time_st = clock();
 	RayTrace << <dimGrim, dimBlock >> > (ray_tracer, (unsigned char*)dev_data);
@@ -150,8 +147,6 @@ int main(int argc, char* argv[])
 	glutDisplayFunc(display_func);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
-	//glutReshapeFunc(Reshape);
-	//glutCloseFunc(Close);
 
 	// OpenGL 2.0지원 여부를 조사
 	if (!isGLVersionSupported(2, 0))
@@ -194,7 +189,7 @@ int main(int argc, char* argv[])
 	cudaMalloc((void**)&dev_id, sizeof(int));
 
 	// Camera
-	camera_pos = KPoint3(0.0f, 0.0f, -20.0f);
+	camera_pos = KPoint3(0.0f, 0.0f, -40.0f);
 	camera_up = KVector3(0.0f, 1.0f, 0.0f);
 	camera_look = KVector3(0.0f, 0.0f, 1.0f);
 	camera_fovx = 120.0f;
@@ -204,20 +199,20 @@ int main(int argc, char* argv[])
 	scene_add_point_light(KPoint3(0.0f, 15.0f, 0.0f), Color(200, 200, 200), id);
 
 	// 구 25개
-	for(int i = 0; i < 5; i++)
-		for (int j = 0; j < 5; j++)
+	for(int i = 0; i < 2; i++)
+		for (int j = 0; j < 3; j++)
 		{
-			scene_add_sphere(KPoint3(i * 3.0f - 6.0f, 0.0f, j * 3.0f - 6.0f), Color(i * 30 + 100, j * 30 + 100, 0),
-							Color(200, 200, 200), 1.0f, 20.0f, 0.35f, 0.0f, 1.2f, id);
+			scene_add_sphere(KPoint3(i * 7.0f - 6.0f, 2.0f, j * 7.0f - 6.0f), Color(i * 30 + 100, j * 30 + 100, 0),
+							Color(200, 200, 200), 1.5f, 20.0f, 0.35f, 0.0f, 1.2f, id);
 		}
 
 	// 유리구슬 한개
-	scene_add_sphere(KPoint3(13.0f, 4.0f, -21.0f), Color(0, 0, 0),
-					Color(0, 0, 0), 0.5f, 20.0f, 0.0f, 1.0f, 1.705f, id);
+	scene_add_sphere(KPoint3(10.0f, 8.0f, -10.0f), Color(0, 0, 0),
+					Color(0, 0, 0), 3.0f, 20.0f, 0.0f, 1.0f, 1.87f, id);
 
 	// Plane
-	//scene_add_plane(KVector3(0.0f, 1.0f, 0.0f), KPoint3(0.0f, -1.0f, 0.0f),
-	//				Color(140, 140, 140), Color(140, 140, 140), 30.0f, 0.3f, 0.0f, 1.2f, id);
+	scene_add_plane(KVector3(0.0f, 1.0f, 0.0f), KPoint3(0.0f, -4.0f, 0.0f),
+					Color(140, 140, 140), Color(140, 140, 140), 30.0f, 0.0f, 0.0f, 1.2f, id);
 
 	SetImageResolution<<<1, 1>>>(ray_tracer, width, height);
 
@@ -255,12 +250,15 @@ void scene_add_sphere(const KPoint3& pos, const Color& diffuse, const Color& spe
 					const float& r, const float& shininess, const float& reflect,
 					const float& refract, const float& density, int& id)
 {
+	// gpu
 	cudaMemcpy(dev_kpos, &pos, sizeof(KPoint3), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_diffuse, &diffuse, sizeof(Color), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_specular, &specular, sizeof(Color), cudaMemcpyHostToDevice);
 	AddSphere << <1, 1 >> >(ray_tracer, dev_kpos, r, dev_diffuse, dev_specular, shininess, reflect, refract, density, dev_id);
-	
 	cudaMemcpy(&id, dev_id, sizeof(int), cudaMemcpyDeviceToHost);
+	// cpu
+	Object* object_ptr = new Sphere(pos, r, diffuse, specular, shininess, reflect, refract, density);
+	objects.insert(pair<int, Object*>(id, object_ptr));
 }
 
 void scene_add_plane(const KVector3& normal, const KPoint3& point,
@@ -268,23 +266,34 @@ void scene_add_plane(const KVector3& normal, const KPoint3& point,
 					const float& shininess, const float& reflect,
 					const float& refract, const float& density, int& id)
 {
+	// gpu
 	cudaMemcpy(dev_kvec, &normal, sizeof(KVector3), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_kpos, &point, sizeof(KPoint3), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_diffuse, &diffuse, sizeof(Color), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_specular, &specular, sizeof(Color), cudaMemcpyHostToDevice);
 	AddPlane << <1, 1 >> >(ray_tracer, dev_kvec, dev_kpos, dev_diffuse, dev_specular, shininess, reflect, refract, density, dev_id);
-
 	cudaMemcpy(&id, dev_id, sizeof(int), cudaMemcpyDeviceToHost);
+	// cpu
+	Object* object_ptr = new Plane(normal, point, diffuse, specular, shininess, reflect, refract, density);
+	objects.insert(pair<int, Object*>(id, object_ptr));
 }
 
 void scene_modify_sphere(__in int id, __in const KPoint3& pos, __in const Color& diffuse, __in const Color& specular,
 						__in const float& r, __in const float& shininess, __in const float& reflect,
 						__in const float& refract, __in const float& density)
 {
+	// gpu
 	cudaMemcpy(dev_kpos, &pos, sizeof(KPoint3), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_diffuse, &diffuse, sizeof(Color), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_specular, &specular, sizeof(Color), cudaMemcpyHostToDevice);
 	ModifySphere<<<1, 1>>>(id, ray_tracer, dev_kpos, r, dev_diffuse, dev_specular, shininess, reflect, refract, density);
+	// cpu
+	if (objects[id]->GetType() != SPHERE_TYPE)
+		return;
+	else
+	{
+		*objects[id] = Sphere(pos, r, diffuse, specular, shininess, reflect, refract, density);
+	}
 }
 
 void scene_modify_plane(__in int id, __in const KVector3& normal, __in const KPoint3& point,
@@ -292,27 +301,46 @@ void scene_modify_plane(__in int id, __in const KVector3& normal, __in const KPo
 						__in const float& shininess, __in const float& reflect,
 						__in const float& refract, __in const float& density)
 {
+	// gpu
 	cudaMemcpy(dev_kvec, &normal, sizeof(KVector3), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_kpos, &point, sizeof(KPoint3), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_diffuse, &diffuse, sizeof(Color), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_specular, &specular, sizeof(Color), cudaMemcpyHostToDevice);
 	ModifyPlane << <1, 1 >> > (id, ray_tracer, dev_kvec, dev_kpos, dev_diffuse, dev_specular, shininess, reflect, refract, density);
+	// cpu
+	if (objects[id]->GetType() != PLANE_TYPE)
+		return;
+	else
+	{
+		*objects[id] = Plane(normal, point, diffuse, specular, shininess, reflect, refract, density);
+	}
 }
 
 void scene_add_point_light(__in const KPoint3& point, __in const Color& color, __out int& id)
 {
+	// gpu
 	cudaMemcpy(dev_kpos, &point, sizeof(KPoint3), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_diffuse, &color, sizeof(Color), cudaMemcpyHostToDevice);
 	AddPointLight << <1, 1 >> > (ray_tracer, dev_kpos, dev_diffuse, dev_id);
-
 	cudaMemcpy(&id, dev_id, sizeof(int), cudaMemcpyDeviceToHost);
+	// cpu
+	PointLight* light_ptr = new PointLight(point, color);
+	lights.insert(pair<int, PointLight*>(id, light_ptr));
 }
 
 void scene_modify_point_light(__in int id, __in const KPoint3& point, __in const Color& color)
 {
+	// gpu
 	cudaMemcpy(dev_kpos, &point, sizeof(KPoint3), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_diffuse, &color, sizeof(Color), cudaMemcpyHostToDevice);
 	ModifyPointLight << <1, 1 >> > (id, ray_tracer, dev_kpos, dev_diffuse);
+	// cpu
+	if (lights[id]->GetType() != POINT_LIGHT_TYPE)
+		return;
+	else
+	{
+		*lights[id] = PointLight(point, color);
+	}
 }
 
 // OPENGL FUNC
@@ -325,12 +353,57 @@ void mouse(__in int button, __in int state, __in int x, __in int y)
 		beforePoint[0] = x;
 		beforePoint[1] = y;
 	}
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		is_object_select = true;
+		GetClickedObj << <1, 1 >> > (ray_tracer, x, y, dev_id);
+		cudaMemcpy(&selected_object, dev_id, sizeof(int), cudaMemcpyDeviceToHost);
+		printf("selected id: %d\n", selected_object);
+		if (selected_object < 0)
+		{
+			is_object_select = false;
+			return;
+		}
+		else
+		{
+			GetObjectPosition << <1, 1 >> > (ray_tracer, selected_object, dev_kpos);
+			cudaMemcpy(&selected_object_pos, dev_kpos, sizeof(KPoint3), cudaMemcpyDeviceToHost);
+		}
+	}
 	
 	if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP)
 		is_camera_rotate = false;
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+		is_object_select = false;
 }
 void motion(__in int _x, __in int _y)
 {
+	// 왼쪽 클릭하고 드래그 시 오브젝트 이동
+	if (is_object_select)
+	{
+		KVector3 o = camera.GetScreenO(width, height);
+		KPoint3 pos = camera.GetEyePosition();
+		KVector3 dir = o +
+			_x * camera.GetScreenU() +
+			_y * camera.GetScreenV();
+		dir = dir.Normalize();
+		Ray ray(pos, dir);
+
+		//printf("selected type: %d\n", objects[selected_object]->GetType());
+
+		// 구 움직이기
+		if (objects[selected_object]->GetType() == SPHERE_TYPE)
+		{
+			KPoint3 temp_pos = KPoint3(pos + dir * 40.0f);
+			//printf("position: %f, %f, %f\n", temp_pos[0], temp_pos[1], temp_pos[2]);
+			scene_modify_sphere(selected_object, temp_pos, objects[selected_object]->GetDiffuse(), objects[selected_object]->GetSpecular(),
+								((Sphere*)objects[selected_object])->GetR(), objects[selected_object]->GetShininess(), objects[selected_object]->GetReflectance(),
+								objects[selected_object]->GetTransmittance(), objects[selected_object]->GetDensity());
+		}
+
+		glutPostRedisplay();
+	}
+
 	// 오른쪽 클릭하고 드래그 시 카메라 회전
 	if (is_camera_rotate)
 	{
@@ -342,7 +415,7 @@ void motion(__in int _x, __in int _y)
 		eyeToNewEye[1] = (_y - beforePoint[1]);
 	
 		for (int i = 0; i < 3; i++)
-			l[i] = -camera_pos[i] / 20.0f;
+			l[i] = -camera_pos[i] / 40.0f;
 	
 		r[0] = -l[2];
 		r[1] = 0;
@@ -358,7 +431,7 @@ void motion(__in int _x, __in int _y)
 		GLfloat newEyeLength = sqrtf(newEye[0] * newEye[0] + newEye[1] * newEye[1] + newEye[2] * newEye[2]);
 	
 		for (int i = 0; i < 3; i++)
-			newEye[i] = 20.0f * newEye[i] / newEyeLength;
+			newEye[i] = 40.0f * newEye[i] / newEyeLength;
 	
 		camera_pos = newEye;
 	
@@ -369,6 +442,7 @@ void motion(__in int _x, __in int _y)
 		beforePoint[0] = _x;
 		beforePoint[1] = _y;
 
+		camera = Camera(camera_pos, camera_up, camera_look, camera_fovx);
 		scene_set_camera(camera_pos, camera_up, camera_look, camera_fovx);
 		glutPostRedisplay();
 	}

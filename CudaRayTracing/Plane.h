@@ -23,21 +23,24 @@ public:
 private:
 	// Members
 	KVector3 normal;
+	KPoint3 point;
 	float d;
 
 public:
 	// Methods
+	__host__ __device__ Plane& operator =(const Plane& other);
 	__host__ __device__ virtual Object* GetHeapCopy() const;
 	__host__ __device__ virtual void GetIntersectionPoint(__in const Ray& ray, __out KPoint3& intersect_point, 
 														__out bool& is_intersect) const;
 	__host__ __device__ virtual void GetNormal(__in const KPoint3& point, __out KVector3& normal) const;
 	__host__ __device__ virtual int GetType() const;
+	__host__ __device__ virtual KPoint3 GetPosition() const;
 };
 
 Plane::Plane(__in const KPoint3 points[3], __in const Color& diffuse,
 	__in const Color& specular, __in const float shininess, __in const float reflectance,
 	__in const float transmittance, __in const float density)
-	: Object(diffuse, specular, shininess, reflectance, transmittance, density)
+	: Object(diffuse, specular, shininess, reflectance, transmittance, density), point(points[0])
 {
 	// calculate 
 	KVector3 tempV1 = (points[0] - points[1]).Normalize();
@@ -52,7 +55,7 @@ Plane::Plane(__in const KVector3& normal, __in const KPoint3& point, __in const 
 	__in const Color& specular, __in const float shininess, __in const float reflectance,
 	__in const float transmittance, __in const float density)
 	: Object(diffuse, specular, shininess, reflectance, transmittance, density),
-	normal(normal)
+	normal(normal), point(point)
 {
 	// get D
 	this->d = -(normal * cast_vec3(point));
@@ -64,6 +67,23 @@ Plane::Plane(__in const Plane& cpy)
 
 Plane::~Plane()
 {}
+
+Plane& Plane::operator =(const Plane& other)
+{
+	this->ambient = other.ambient;
+	this->diffuse = other.diffuse;
+	this->specular = other.specular;
+	this->shininess = other.shininess;
+	this->reflectance = other.reflectance;
+	this->transmittance = other.transmittance;
+	this->density = other.density;
+	this->id = other.id;
+	this->normal = other.normal;
+	this->point = other.point;
+	this->d = other.d;
+
+	return *this;
+}
 
 Object* Plane::GetHeapCopy() const
 {
@@ -100,6 +120,11 @@ void Plane::GetNormal(__in const KPoint3& point, __out KVector3& normal) const
 int Plane::GetType() const
 {
 	return PLANE_TYPE;
+}
+
+KPoint3 Plane::GetPosition() const
+{
+	return this->point;
 }
 
 #endif
