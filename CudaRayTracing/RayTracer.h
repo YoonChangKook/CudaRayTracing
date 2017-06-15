@@ -191,6 +191,14 @@ void RayTracer::Shade(__in const KPoint3& point, __in const KVector3& normal,
 		
 				total += temp;
 			}
+			else if (this->objects[shade_inter_obj_id]->GetTransmittance() > 0.0f)
+			{
+				Color temp;
+				this->objects[intersected_obj_id]->
+					Local_Illumination(point, normal, ray, *this->lights[i], temp);
+			
+				total += temp * this->objects[shade_inter_obj_id]->GetTransmittance();
+			}
 		}
 	}
 
@@ -209,24 +217,77 @@ void RayTracer::Shade(__in const KPoint3& point, __in const KVector3& normal,
 	// check whether this object is transmissive
 	if (this->objects[intersected_obj_id]->GetTransmittance() > 0 && recur_num > 0)
 	{
-		float n;
+		float n, n1, n2;
+
+		float cosi = ray.GetDirection().NormalizeCopy() * normal.NormalizeCopy();
+		KVector3 N;
 
 		// check whether ray 
-		if (normal * ray.GetDirection() > 0)
-			n = 1 / this->objects[intersected_obj_id]->GetDensity();
+		if (cosi > 0)	// 나올 때
+		{
+			n2 = 1.0f;
+			n1 = this->objects[intersected_obj_id]->GetDensity();
+			N = -normal;
+		}
+		else			// 들어갈 때
+		{
+			n1 = 1.0f;
+			n2 = this->objects[intersected_obj_id]->GetDensity();
+			N = normal;
+			cosi = -cosi;
+		}
+
+		N.Normalize();
+		n = n1 / n2;
+		float sint2 = n * n * (1.0f - cosi * cosi);
+		float cost = sqrt(1.0f - sint2);
+		//fresnel equations
+		float rn = (n1 * cosi - n2 * cost) / (n1 * cosi + n2 * cost);
+		float rt = (n2 * cosi - n1 * cost) / (n2 * cosi + n2 * cost);
+		rn *= rn;
+		rt *= rt;
+		float refl, trans;
+
+		if (1.0f <= sint2) //tot inner refl
+		{
+			refl = 1.0f;
+			trans = 0.0f;
+		}
 		else
-			n = this->objects[intersected_obj_id]->GetDensity() / 1;
+		{
+			refl = (rn + rt) * 0.5f;
+			trans = 1.0f - refl;
+		}
 
-		float cosi = normal * (-ray.GetDirection());
-		float cost = n * (1 - (1 / (n * n))) * sqrt(1 - cosi * cosi);
-		KVector3 T = ((1 / n) * ray.GetDirection() - (cost - (1 / n)*cosi) * normal).Normalize();
-
-		Ray temp_ray(point + T * 0.05f, T);
+		KVector3 reflect_T = (2 * N * (N * (-ray.GetDirection())) + ray.GetDirection()).Normalize();
+		KVector3 refract_T = n * ray.GetDirection().NormalizeCopy() + (n * cosi - cost) * N;
 		Color temp_color;
-
+		// reflect inner
+		Ray temp_ray(point + reflect_T * 0.05f, reflect_T);
 		Trace(temp_ray, recur_num - 1, intersected_obj_id, temp_color);
+		total += temp_color * this->objects[intersected_obj_id]->GetTransmittance() * refl;
 
-		total += temp_color * this->objects[intersected_obj_id]->GetTransmittance();
+		// refract
+		temp_ray = Ray(point + refract_T * 0.05f, refract_T);
+		Trace(temp_ray, recur_num - 1, intersected_obj_id, temp_color);
+		total += temp_color * this->objects[intersected_obj_id]->GetTransmittance() * trans;
+
+		//KVector3 temp_ray_dir = (2 * N * (N * (-ray.GetDirection())) + ray.GetDirection()).Normalize();
+		//Ray temp_ray(point + temp_ray_dir * 0.05f, temp_ray_dir);
+		//Color temp_color;
+		//
+		//Trace(temp_ray, recur_num - 1, intersected_obj_id, temp_color);
+		//
+		//total += temp_color * this->objects[intersected_obj_id]->GetReflectance();
+		//
+		//T = n * ray.GetDirection().NormalizeCopy() + (n * cosi - cost) * N;
+		//
+		//Ray temp_ray(point + T * 0.05f, T);
+		//Color temp_color;
+		//
+		//Trace(temp_ray, recur_num - 1, intersected_obj_id, temp_color);
+		//
+		//total += temp_color * this->objects[intersected_obj_id]->GetTransmittance();
 	}
 
 	color = total;

@@ -22,11 +22,11 @@ public:
 	__host__ __device__ const unsigned char& operator [](const int& idx) const;
 	__host__ __device__ Color operator +(const Color& other) const;
 	__host__ __device__ Color operator -(const Color& other) const;
-	__host__ __device__ Color operator *(const double& v) const;
+	__host__ __device__ Color operator *(const float& v) const;
 	__host__ __device__ Color& operator =(const Color& other);
 	__host__ __device__ Color& operator +=(const Color& other);
 	__host__ __device__ Color& operator -=(const Color& other);
-	__host__ __device__ Color& operator *=(const double& v);
+	__host__ __device__ Color& operator *=(const float& v);
 };
 
 Color::Color()
@@ -83,7 +83,7 @@ Color Color::operator -(const Color& other) const
 	return temp;
 }
 
-Color Color::operator *(const double& v) const
+Color Color::operator *(const float& v) const
 {
 	Color temp(this->color);
 	for (int i = 0; i < 3; i++)
@@ -129,7 +129,7 @@ Color& Color::operator -=(const Color& other)
 	return *this;
 }
 
-Color& Color::operator *=(const double& v)
+Color& Color::operator *=(const float& v)
 {
 	for (int i = 0; i < 3; i++)
 	{

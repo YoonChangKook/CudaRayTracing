@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
 	cudaMalloc((void**)&dev_id, sizeof(int));
 
 	// Camera
-	camera_pos = KPoint3(0.0f, 0.0f, -40.0f);
+	camera_pos = KPoint3(0.0f, 0.0f, -60.0f);
 	camera_up = KVector3(0.0f, 1.0f, 0.0f);
 	camera_look = KVector3(0.0f, 0.0f, 1.0f);
 	camera_fovx = 120.0f;
@@ -208,7 +208,7 @@ int main(int argc, char* argv[])
 
 	// 유리구슬 한개
 	scene_add_sphere(KPoint3(10.0f, 8.0f, -10.0f), Color(0, 0, 0),
-					Color(0, 0, 0), 3.0f, 20.0f, 0.0f, 1.0f, 1.87f, id);
+					Color(0, 0, 0), 3.0f, 20.0f, 0.0f, 1.0f, 1.58f, id);
 
 	// Plane
 	scene_add_plane(KVector3(0.0f, 1.0f, 0.0f), KPoint3(0.0f, -4.0f, 0.0f),
@@ -394,7 +394,7 @@ void motion(__in int _x, __in int _y)
 		// 구 움직이기
 		if (objects[selected_object]->GetType() == SPHERE_TYPE)
 		{
-			KPoint3 temp_pos = KPoint3(pos + dir * 40.0f);
+			KPoint3 temp_pos = KPoint3(pos + dir * 60.0f);
 			//printf("position: %f, %f, %f\n", temp_pos[0], temp_pos[1], temp_pos[2]);
 			scene_modify_sphere(selected_object, temp_pos, objects[selected_object]->GetDiffuse(), objects[selected_object]->GetSpecular(),
 								((Sphere*)objects[selected_object])->GetR(), objects[selected_object]->GetShininess(), objects[selected_object]->GetReflectance(),
@@ -415,7 +415,7 @@ void motion(__in int _x, __in int _y)
 		eyeToNewEye[1] = (_y - beforePoint[1]);
 	
 		for (int i = 0; i < 3; i++)
-			l[i] = -camera_pos[i] / 40.0f;
+			l[i] = -camera_pos[i] / 60.0f;
 	
 		r[0] = -l[2];
 		r[1] = 0;
@@ -431,7 +431,7 @@ void motion(__in int _x, __in int _y)
 		GLfloat newEyeLength = sqrtf(newEye[0] * newEye[0] + newEye[1] * newEye[1] + newEye[2] * newEye[2]);
 	
 		for (int i = 0; i < 3; i++)
-			newEye[i] = 40.0f * newEye[i] / newEyeLength;
+			newEye[i] = 60.0f * newEye[i] / newEyeLength;
 	
 		camera_pos = newEye;
 	
