@@ -83,6 +83,11 @@ void scene_add_plane(__in const KVector3& normal, __in const KPoint3& point,
 					__in const Color& diffuse, __in const Color& specular, 
 					__in const float& shininess, __in const float& reflect,
 					__in const float& refract, __in const float& density, __out int& id);
+void scene_add_mesh(__in const char* filename,
+					__in const KPoint3& point, __in const Color& diffuse,
+					__in const Color& specular, __in const float& shininess,
+					__in const float& reflect, __in const float& refract,
+					__in const float& density, __out int& id);
 void scene_modify_sphere(__in int id, __in const KPoint3& pos, __in const Color& diffuse, __in const Color& specular,
 						__in const float& r, __in const float& shininess, __in const float& reflect,
 						__in const float& refract, __in const float& density);
@@ -90,6 +95,10 @@ void scene_modify_plane(__in int id, __in const KVector3& normal, __in const KPo
 						__in const Color& diffuse, __in const Color& specular,
 						__in const float& shininess, __in const float& reflect,
 						__in const float& refract, __in const float& density);
+void scene_modify_mesh(__in int id, __in const KPoint3& point, __in const Color& diffuse,
+						__in const Color& specular, __in const float& shininess,
+						__in const float& reflect, __in const float& refract,
+						__in const float& density);
 void scene_add_point_light(__in const KPoint3& point, __in const Color& color, __out int& id);
 void scene_modify_point_light(__in int id, __in const KPoint3& point, __in const Color& color);
 
@@ -278,6 +287,20 @@ void scene_add_plane(const KVector3& normal, const KPoint3& point,
 	objects.insert(pair<int, Object*>(id, object_ptr));
 }
 
+void scene_add_mesh(__in const char* filename,
+	__in const KPoint3& point, __in const Color& diffuse,
+	__in const Color& specular, __in const float& shininess,
+	__in const float& reflect, __in const float& refract,
+	__in const float& density, __out int& id)
+{
+	// gpu
+	cudaMemcpy(dev_kpos, &point, sizeof(KPoint3), cudaMemcpyHostToDevice);
+	cudaMemcpy(dev_diffuse, &diffuse, sizeof(Color), cudaMemcpyHostToDevice);
+	cudaMemcpy(dev_specular, &specular, sizeof(Color), cudaMemcpyHostToDevice);
+	// obj load
+
+}
+
 void scene_modify_sphere(__in int id, __in const KPoint3& pos, __in const Color& diffuse, __in const Color& specular,
 						__in const float& r, __in const float& shininess, __in const float& reflect,
 						__in const float& refract, __in const float& density)
@@ -315,6 +338,12 @@ void scene_modify_plane(__in int id, __in const KVector3& normal, __in const KPo
 		*objects[id] = Plane(normal, point, diffuse, specular, shininess, reflect, refract, density);
 	}
 }
+
+void scene_modify_mesh(__in int id, __in const KPoint3& point, __in const Color& diffuse,
+						__in const Color& specular, __in const float& shininess,
+						__in const float& reflect, __in const float& refract,
+						__in const float& density)
+{}
 
 void scene_add_point_light(__in const KPoint3& point, __in const Color& color, __out int& id)
 {
